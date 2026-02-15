@@ -3,11 +3,11 @@ name = "exchange-mcp-server"
 version = "1.0.1"
 description = "MCP server for Exchange / OWA - email, calendar, directory, availability"
 readme = "README.md"
+license = "MIT"
 requires-python = ">=3.10"
 keywords = ["mcp", "exchange", "owa", "outlook", "email", "calendar"]
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
 ]
 dependencies = [
     "mcp>=1.0.0",
