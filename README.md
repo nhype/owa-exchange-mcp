@@ -7,8 +7,8 @@ Works with any on-premise or hosted Exchange server that exposes OWA.
 ## Quick Start
 
 ```bash
-# Set your OWA server URL
-export EXCHANGE_OWA_URL=https://owa.example.com
+# Copy and edit the MCP config with your OWA URL
+cp .mcp.json.example .mcp.json
 
 # One-time: set up encrypted credentials
 python3 login.py --setup
@@ -16,9 +16,8 @@ python3 login.py --setup
 # Login (opens headless browser, 2FA approval required)
 python3 login.py
 
-# Install and run the MCP server
+# Install the MCP server
 pip install -e .
-exchange-mcp-server
 ```
 
 ## Configuration
