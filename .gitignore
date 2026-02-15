@@ -1,5 +1,6 @@
 # Local config
 .mcp.json
+instructions.md
 
 # Credentials and session data
 .credentials.enc
