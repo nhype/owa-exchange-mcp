@@ -1,6 +1,6 @@
 [project]
 name = "exchange-mcp-server"
-version = "1.0.0"
+version = "1.0.1"
 description = "MCP server for Exchange / OWA - email, calendar, directory, availability"
 readme = "README.md"
 requires-python = ">=3.10"
