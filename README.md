@@ -22,6 +22,58 @@ python3 login.py
 pip install -e .
 ```
 
+## Install
+
+Add to your MCP client config. Replace `https://owa.example.com` with your OWA URL.
+
+**Claude Desktop** (`~/Library/Application Support/Claude/claude_desktop_config.json`):
+
+```json
+{
+  "mcpServers": {
+    "exchange": {
+      "command": "uvx",
+      "args": ["exchange-mcp-server"],
+      "env": {
+        "EXCHANGE_OWA_URL": "https://owa.example.com"
+      }
+    }
+  }
+}
+```
+
+**Cursor** (`.cursor/mcp.json`):
+
+```json
+{
+  "mcpServers": {
+    "exchange": {
+      "command": "uvx",
+      "args": ["exchange-mcp-server"],
+      "env": {
+        "EXCHANGE_OWA_URL": "https://owa.example.com"
+      }
+    }
+  }
+}
+```
+
+**Claude Code** (`.mcp.json`):
+
+```json
+{
+  "mcpServers": {
+    "exchange": {
+      "command": "uvx",
+      "args": ["exchange-mcp-server"],
+      "env": {
+        "EXCHANGE_OWA_URL": "https://owa.example.com"
+      }
+    }
+  }
+}
+```
+
 ## Configuration
 
 | Variable | Required | Description |
