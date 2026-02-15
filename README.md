@@ -191,6 +191,10 @@ exchange_mcp/
 pyproject.toml            # Package config
 ```
 
+## Warning
+
+Every Exchange / OWA deployment has its own authentication setup — some require 2FA (push notifications, TOTP, SMS), others use single-factor login or SSO. The login logic in this project (`login.py` and `exchange_mcp/auth.py`) is written for a specific 2FA flow (mobile push approval). If your OWA server uses a different 2FA method or no 2FA at all, you will need to modify or remove the login logic to match your environment.
+
 ## Security
 
 - Credentials and session cookies encrypted with AES-256-Fernet
