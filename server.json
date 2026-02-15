@@ -1,0 +1,34 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.nhype/owa-exchange-mcp",
+  "title": "OWA Exchange MCP Server",
+  "description": "MCP server for Microsoft Exchange / OWA — email, calendar, directory, availability",
+  "repository": {
+    "url": "https://github.com/nhype/owa-exchange-mcp",
+    "source": "github"
+  },
+  "version": "1.0.0",
+  "packages": [
+    {
+      "registryType": "pypi",
+      "identifier": "exchange-mcp-server",
+      "version": "1.0.0",
+      "runtimeHint": "uvx",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "EXCHANGE_OWA_URL",
+          "description": "Base URL of your OWA instance (e.g. https://owa.example.com)",
+          "required": true
+        },
+        {
+          "name": "EXCHANGE_COOKIE_FILE",
+          "description": "Path to session cookies file (default: session-cookies.txt)",
+          "required": false
+        }
+      ]
+    }
+  ]
+}

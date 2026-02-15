@@ -5,9 +5,11 @@
 .credentials.enc
 .salt
 session-cookies.txt
+.mcpregistry_*
 
 # Python
 __pycache__/
 *.pyc
 *.egg-info/
+dist/
 .playwright-mcp/

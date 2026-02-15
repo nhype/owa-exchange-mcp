@@ -2,11 +2,21 @@
 name = "exchange-mcp-server"
 version = "1.0.0"
 description = "MCP server for Exchange / OWA - email, calendar, directory, availability"
+readme = "README.md"
 requires-python = ">=3.10"
+keywords = ["mcp", "exchange", "owa", "outlook", "email", "calendar"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+]
 dependencies = [
     "mcp>=1.0.0",
     "requests>=2.28.0",
 ]
+
+[project.urls]
+Homepage = "https://github.com/nhype/owa-exchange-mcp"
+Repository = "https://github.com/nhype/owa-exchange-mcp"
 
 [project.optional-dependencies]
 auth = ["cryptography", "playwright"]
