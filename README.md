@@ -1,4 +1,4 @@
-# Exchange MCP Server
+# OWA Exchange MCP Server
 
 MCP (Model Context Protocol) server for any Microsoft Exchange / OWA (Outlook Web Access) deployment. Gives LLM agents access to email, calendar, directory search, folders, availability, and meeting analytics via 30 tools.
 
