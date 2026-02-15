@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "exchange-mcp": {
+      "type": "stdio",
+      "command": "exchange-mcp-server",
+      "env": {
+        "EXCHANGE_OWA_URL": "https://owa.example.com"
+      }
+    }
+  }
+}

@@ -1,0 +1,23 @@
+[project]
+name = "exchange-mcp-server"
+version = "1.0.0"
+description = "MCP server for Exchange / OWA - email, calendar, directory, availability"
+requires-python = ">=3.10"
+dependencies = [
+    "mcp>=1.0.0",
+    "requests>=2.28.0",
+]
+
+[project.optional-dependencies]
+auth = ["cryptography", "playwright"]
+
+[project.scripts]
+exchange-mcp-server = "exchange_mcp.server:main"
+
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["exchange_mcp*"]

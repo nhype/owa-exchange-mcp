@@ -1,0 +1,13 @@
+# Local config
+.mcp.json
+
+# Credentials and session data
+.credentials.enc
+.salt
+session-cookies.txt
+
+# Python
+__pycache__/
+*.pyc
+*.egg-info/
+.playwright-mcp/
