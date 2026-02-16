@@ -454,88 +454,45 @@ def get_calendar_events(
         client, start_dt.date(), (end_dt + timedelta(days=1)).date()
     )
 
-    # Step 2: Get non-recurring events via FindItem (they have item_ids for details)
+    # Step 2: Get events with item_ids via FindItem + CalendarView.
+    # CalendarView restricts results to the date range and expands recurring
+    # events into individual occurrences (each with its own ItemId).
     folder_id = client.get_folder_id("calendar")
     finditem_by_key: dict[str, dict] = {}  # "subject|start" -> item
     if folder_id:
+        cv_start = start_dt.strftime("%Y-%m-%dT00:00:00")
+        cv_end = (end_dt + timedelta(days=1)).strftime("%Y-%m-%dT00:00:00")
+
+        payload = {
+            "__type": "FindItemJsonRequest:#Exchange",
+            "Header": {
+                "__type": "JsonRequestHeaders:#Exchange",
+                "RequestServerVersion": "Exchange2013",
+            },
+            "Body": {
+                "__type": "FindItemRequest:#Exchange",
+                "ItemShape": {
+                    "__type": "ItemResponseShape:#Exchange",
+                    "BaseShape": "AllProperties",
+                },
+                "ParentFolderIds": [
+                    {"__type": "FolderId:#Exchange", "Id": folder_id}
+                ],
+                "Traversal": "Shallow",
+                "CalendarView": {
+                    "__type": "CalendarView:#Exchange",
+                    "StartDate": cv_start,
+                    "EndDate": cv_end,
+                },
+            },
+        }
+
+        data = client.request("FindItem", payload)
+
         all_items = []
-        offset = 0
-        batch_size = 100
-
-        is_past = end_dt < datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
-        sort_order = "Ascending" if is_past else "Descending"
-
-        while True:
-            payload = {
-                "__type": "FindItemJsonRequest:#Exchange",
-                "Header": {
-                    "__type": "JsonRequestHeaders:#Exchange",
-                    "RequestServerVersion": "Exchange2013",
-                },
-                "Body": {
-                    "__type": "FindItemRequest:#Exchange",
-                    "ItemShape": {
-                        "__type": "ItemResponseShape:#Exchange",
-                        "BaseShape": "AllProperties",
-                    },
-                    "ParentFolderIds": [
-                        {"__type": "FolderId:#Exchange", "Id": folder_id}
-                    ],
-                    "Traversal": "Shallow",
-                    "Paging": {
-                        "__type": "IndexedPageView:#Exchange",
-                        "BasePoint": "Beginning",
-                        "Offset": offset,
-                        "MaxEntriesReturned": batch_size,
-                    },
-                    "SortOrder": [
-                        {
-                            "__type": "SortResults:#Exchange",
-                            "Order": sort_order,
-                            "Path": {
-                                "__type": "PropertyUri:#Exchange",
-                                "FieldURI": "Start",
-                            },
-                        }
-                    ],
-                },
-            }
-
-            data = client.request("FindItem", payload)
-
-            batch_items = []
-            is_last = True
-            for msg in client.extract_items(data):
-                if "RootFolder" in msg:
-                    batch_items = msg["RootFolder"].get("Items", [])
-                    is_last = msg["RootFolder"].get("IncludesLastItemInRange", True)
-                    break
-
-            if not batch_items:
-                break
-
-            found_out_of_range = False
-            for item in batch_items:
-                item_start = item.get("Start", "")
-                if not item_start:
-                    continue
-                try:
-                    item_dt = parse_iso_datetime(item_start)
-                    if start_dt <= item_dt <= end_dt + timedelta(days=1):
-                        all_items.append(item)
-                    elif is_past and item_dt > end_dt:
-                        found_out_of_range = True
-                        break
-                    elif not is_past and item_dt < start_dt:
-                        found_out_of_range = True
-                        break
-                except ValueError:
-                    continue
-
-            if found_out_of_range or is_last:
-                break
-            offset += batch_size
-            if offset > 2000:
+        for msg in client.extract_items(data):
+            if "RootFolder" in msg:
+                all_items = msg["RootFolder"].get("Items", [])
                 break
 
         # Index FindItem results by subject + normalized local start time.
